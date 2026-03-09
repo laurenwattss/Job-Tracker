@@ -150,7 +150,7 @@ SELECT * FROM (VALUES
     'https://stripe.com/jobs/listing/biz-ops',
     'Applied',
     'High',
-    'Applied through a Haas alum referral. Strong product-market fit with my background in fintech.'
+    'Applied through a Haas alum referral. Strong product-market fit with my background in fintech. Remote - Does not require in office attendance.'
   ),
   (
     'McKinsey & Company',
