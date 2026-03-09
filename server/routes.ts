@@ -38,6 +38,12 @@ export async function registerRoutes(
     if (body.companyName !== undefined) updates.companyName = body.companyName;
     if (body.roleTitle !== undefined) updates.roleTitle = body.roleTitle;
     if (body.jobUrl !== undefined) updates.jobUrl = body.jobUrl;
+    if (body.salary !== undefined) {
+      if (body.salary !== null && typeof body.salary !== "string") {
+        return res.status(400).json({ message: "Salary must be a text value" });
+      }
+      updates.salary = body.salary === "" ? null : body.salary;
+    }
     if (body.notes !== undefined) updates.notes = body.notes;
 
     if (body.status !== undefined) {
