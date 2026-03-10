@@ -20,12 +20,13 @@ server/
   prospect-helpers.ts         - Pure helper functions (getNextStatus, validateProspect, isTerminalStatus)
 client/src/
   App.tsx                     - Root component, routing, providers
-  pages/home.tsx              - Kanban board with 7 status columns, per-column interest level filtering
+  pages/home.tsx              - Kanban board with 7 status columns, per-column interest level filtering, collapsible analytics dashboard
   components/
+    dashboard-charts.tsx      - Analytics dashboard: bar chart (stages) + pie chart (companies) using Recharts
     prospect-card.tsx         - Card component with edit/delete actions
     add-prospect-form.tsx     - Dialog form for creating prospects
     edit-prospect-form.tsx    - Dialog form for editing prospects
-    ui/                       - shadcn/ui primitives
+    ui/                       - shadcn/ui primitives (includes chart.tsx wrapping Recharts)
 ```
 
 ## Database
