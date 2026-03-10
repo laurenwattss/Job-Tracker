@@ -4,7 +4,8 @@ import type { Prospect } from "@shared/schema";
 import { STATUSES, INTEREST_LEVELS } from "@shared/schema";
 import { ProspectCard } from "@/components/prospect-card";
 import { AddProspectForm } from "@/components/add-prospect-form";
-import { Briefcase, Plus } from "lucide-react";
+import { Briefcase, Plus, ChevronDown, ChevronUp } from "lucide-react";
+import { DashboardCharts } from "@/components/dashboard-charts";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -113,6 +114,7 @@ function KanbanColumn({
 
 export default function Home() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(true);
 
   const { data: prospects, isLoading } = useQuery<Prospect[]>({
     queryKey: ["/api/prospects"],
@@ -163,6 +165,28 @@ export default function Home() {
           </div>
         </div>
       </header>
+
+      <div className="border-b bg-card/30 shrink-0">
+        <button
+          onClick={() => setShowDashboard(!showDashboard)}
+          className="flex items-center gap-1.5 px-4 sm:px-6 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors w-full"
+          data-testid="button-toggle-dashboard"
+        >
+          {showDashboard ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          {showDashboard ? "Hide Analytics" : "Show Analytics"}
+        </button>
+        {showDashboard && (
+          isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 sm:px-6 pt-4 pb-4">
+              <Skeleton className="h-[260px] rounded-lg" />
+              <Skeleton className="h-[260px] rounded-lg" />
+            </div>
+          ) : (
+            <DashboardCharts prospects={prospects ?? []} />
+          )
+        )}
+        {showDashboard && <div className="h-4" />}
+      </div>
 
       <main className="flex-1 overflow-x-auto overflow-y-hidden">
         <div className="flex gap-3 p-4 h-full min-w-max">
