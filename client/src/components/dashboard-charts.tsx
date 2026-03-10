@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import type { Prospect } from "@shared/schema";
 import { STATUSES } from "@shared/schema";
+import { computeStageCounts, computeCompanyCounts } from "@shared/chart-helpers";
 import {
   ChartContainer,
   ChartTooltip,
@@ -37,14 +38,7 @@ const companyColors = [
 ];
 
 export function DashboardCharts({ prospects }: { prospects: Prospect[] }) {
-  const barData = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const s of STATUSES) counts[s] = 0;
-    for (const p of prospects) {
-      if (counts[p.status] !== undefined) counts[p.status]++;
-    }
-    return STATUSES.map((s) => ({ stage: s, count: counts[s] }));
-  }, [prospects]);
+  const barData = useMemo(() => computeStageCounts(prospects), [prospects]);
 
   const barConfig: ChartConfig = useMemo(() => {
     const cfg: ChartConfig = {};
@@ -55,19 +49,16 @@ export function DashboardCharts({ prospects }: { prospects: Prospect[] }) {
     return cfg;
   }, []);
 
-  const pieData = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const p of prospects) {
-      counts[p.companyName] = (counts[p.companyName] || 0) + 1;
-    }
-    return Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
-      .map(([name, value], i) => ({
-        name,
-        value,
+  const rawCompanyCounts = useMemo(() => computeCompanyCounts(prospects), [prospects]);
+
+  const pieData = useMemo(
+    () =>
+      rawCompanyCounts.map((d, i) => ({
+        ...d,
         fill: companyColors[i % companyColors.length],
-      }));
-  }, [prospects]);
+      })),
+    [rawCompanyCounts]
+  );
 
   const pieConfig: ChartConfig = useMemo(() => {
     const cfg: ChartConfig = {};

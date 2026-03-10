@@ -12,6 +12,7 @@ A Kanban-style job search tracker built with React, Express, and PostgreSQL. Pro
 
 ```
 shared/schema.ts              - Database table definition, Zod validation, TypeScript types
+shared/chart-helpers.ts       - Pure functions for chart data transforms (stage counts, company counts)
 server/
   index.ts                    - Express app bootstrap, middleware, server start
   db.ts                       - PostgreSQL connection pool (Drizzle)
